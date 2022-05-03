@@ -1,0 +1,4 @@
+baseURL = 'http://chanshare.github.io'
+languageCode = 'en-us'
+title = 'Chanshare V2'
+theme = "hugo-book"
