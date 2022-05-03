@@ -1,0 +1,38 @@
+<!doctype html><html lang=en-us dir=ltr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="Room Provisioner #  The room provisioner takes a create room request, tells the content service to gather the media, and tells the room manager to start a room.
+The request for provisioning a room looks like this
+ENDPOINT: /create_room { &#34;user&#34;: &#34;your perfered nickname&#34;, &#34;thread_id&#34;: &#34;1234123&#34;, &#34;board_sn&#34;: &#34;wsg&#34; } On receiving that request the first thing to happen is the playlist is assembled by making a request to the content service."><meta name=theme-color content="#FFFFFF"><meta name=color-scheme content="light dark"><meta property="og:title" content="Room Provisioner"><meta property="og:description" content="Room Provisioner #  The room provisioner takes a create room request, tells the content service to gather the media, and tells the room manager to start a room.
+The request for provisioning a room looks like this
+ENDPOINT: /create_room { &#34;user&#34;: &#34;your perfered nickname&#34;, &#34;thread_id&#34;: &#34;1234123&#34;, &#34;board_sn&#34;: &#34;wsg&#34; } On receiving that request the first thing to happen is the playlist is assembled by making a request to the content service."><meta property="og:type" content="article"><meta property="og:url" content="http://chanshare.github.io/docs/room_provisioner/"><meta property="article:section" content="docs"><title>Room Provisioner | Chanshare V2</title><link rel=manifest href=/manifest.json><link rel=icon href=/favicon.png type=image/x-icon><link rel=stylesheet href=/book.min.82c5dbd23447cee0b4c2aa3ed08ce0961faa40e1fa370eee4f8c9f02e0d46b5f.css integrity="sha256-gsXb0jRHzuC0wqo+0Izglh+qQOH6Nw7uT4yfAuDUa18=" crossorigin=anonymous><script defer src=/flexsearch.min.js></script>
+<script defer src=/en.search.min.3821394d8635c080c3d4566e99e63944d15851c600c74222c4cb9bfd92b54fa8.js integrity="sha256-OCE5TYY1wIDD1FZumeY5RNFYUcYAx0IixMub/ZK1T6g=" crossorigin=anonymous></script></head><body dir=ltr><input type=checkbox class="hidden toggle" id=menu-control>
+<input type=checkbox class="hidden toggle" id=toc-control><main class="container flex"><aside class=book-menu><div class=book-menu-content><nav><h2 class=book-brand><a class="flex align-center" href=/><span>Chanshare V2</span></a></h2><div class=book-search><input type=text id=book-search-input placeholder=Search aria-label=Search maxlength=64 data-hotkeys=s/><div class="book-search-spinner hidden"></div><ul id=book-search-results></ul></div><ul><li><a href=/docs/room_provisioner/ class=active>Room Provisioner</a></li></ul></nav><script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script></div></aside><div class=book-page><header class=book-header><div class="flex align-center justify-between"><label for=menu-control><img src=/svg/menu.svg class=book-icon alt=Menu></label>
+<strong>Room Provisioner</strong>
+<label for=toc-control><img src=/svg/toc.svg class=book-icon alt="Table of Contents"></label></div><aside class="hidden clearfix"><nav id=TableOfContents></nav></aside></header><article class=markdown><h1 id=room-provisioner>Room Provisioner
+<a class=anchor href=#room-provisioner>#</a></h1><p>The room provisioner takes a create room request,
+tells the content service to gather the media,
+and tells the room manager to start a room.</p><p>The request for provisioning a room looks like this</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>ENDPOINT:</span> <span style=color:#960050;background-color:#1e0010>/create_room</span>
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span><span style=color:#f92672>&#34;user&#34;</span>: <span style=color:#e6db74>&#34;your perfered nickname&#34;</span>,
+</span></span><span style=display:flex><span><span style=color:#f92672>&#34;thread_id&#34;</span>: <span style=color:#e6db74>&#34;1234123&#34;</span>,
+</span></span><span style=display:flex><span><span style=color:#f92672>&#34;board_sn&#34;</span>: <span style=color:#e6db74>&#34;wsg&#34;</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>On receiving that request the first thing to happen is the playlist is assembled by making a request to the content service.
+Chances are it will not be fast enough to just download all the media and have the user wait.
+(Well it might be with a nice spinner :) )
+So having the CDN links be generated in a predictable format is pretty essential.</p><p>While the playlist is being generated we generate a name for the room.
+This will be done though mnemonic generation.
+Probably 3 words to keep it short.</p><p>Once we have a name and a playlist we can make a request to the Room Manager to start the room</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
+</span></span><span style=display:flex><span><span style=color:#f92672>&#34;user&#34;</span>: <span style=color:#e6db74>&#34;the users username&#34;</span>,
+</span></span><span style=display:flex><span><span style=color:#f92672>&#34;playlist&#34;</span>: [
+</span></span><span style=display:flex><span><span style=color:#e6db74>&#34;media item 1&#34;</span>,
+</span></span><span style=display:flex><span><span style=color:#e6db74>&#34;media item 2&#34;</span>
+</span></span><span style=display:flex><span>],
+</span></span><span style=display:flex><span><span style=color:#f92672>&#34;room_name&#34;</span>: <span style=color:#e6db74>&#34;the-room-name&#34;</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><script src=/mermaid.min.js></script>
+<script>mermaid.initialize({flowchart:{useMaxWidth:!0},theme:"default"})</script><p class=mermaid>sequenceDiagram
+API Gateway->Room Provisioner: /create_room
+Room Provisioner->>Content Service: generate playlist
+Content Service-XRoom Provisioner: Recive playlist
+Content Service-XContent Service: Download media
+Room Provisioner->>Room Provisioner: Generate Name
+Room Provisioner->>Room Manager: Start Room</p></article><footer class=book-footer><div class="flex flex-wrap justify-between"></div><script>(function(){function e(n){const e=window.getSelection(),t=document.createRange();t.selectNodeContents(n),e.removeAllRanges(),e.addRange(t)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script></footer><div class=book-comments></div><label for=menu-control class="hidden book-menu-overlay"></label></div><aside class=book-toc><div class=book-toc-content><nav id=TableOfContents></nav></div></aside></main></body></html>
